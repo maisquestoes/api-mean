@@ -31,27 +31,7 @@ module.exports = function(app) {
 	}));
 	app.route('/auth/facebook/callback').get(users.oauthCallback('facebook'));
 
-	// Setting the twitter oauth routes
-	app.route('/auth/twitter').get(passport.authenticate('twitter'));
-	app.route('/auth/twitter/callback').get(users.oauthCallback('twitter'));
-
-	// Setting the google oauth routes
-	app.route('/auth/google').get(passport.authenticate('google', {
-		scope: [
-			'https://www.googleapis.com/auth/userinfo.profile',
-			'https://www.googleapis.com/auth/userinfo.email'
-		]
-	}));
-	app.route('/auth/google/callback').get(users.oauthCallback('google'));
-
-	// Setting the linkedin oauth routes
-	app.route('/auth/linkedin').get(passport.authenticate('linkedin'));
-	app.route('/auth/linkedin/callback').get(users.oauthCallback('linkedin'));
-
-	// Setting the github oauth routes
-	app.route('/auth/github').get(passport.authenticate('github'));
-	app.route('/auth/github/callback').get(users.oauthCallback('github'));
-
+	app.route('/auth/accessToken').post(users.accessToken);
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
 };

@@ -7,7 +7,8 @@ var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	JsonReturn = require('../../models/jsonreturn.server.model.js');
 
 /**
  * Signup
@@ -72,8 +73,9 @@ exports.signin = function(req, res, next) {
 /**
  * Recuperar o acess_token pelo login e senha
  */
-exports.AccessToken = function(req, res, next) {
-	res.json({teste: 'teste'});
+exports.accessToken = function(req, res, next) {
+	var jsonReturn = new JsonReturn();
+	res.json(jsonReturn);
 };
 
 /**
