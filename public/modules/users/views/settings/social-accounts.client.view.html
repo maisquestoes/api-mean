@@ -1,0 +1,15 @@
+<section class="row" data-ng-controller="SettingsController">
+	<div class="col-md-12 text-center">
+		<div data-ng-repeat="(providerName, providerData) in user.additionalProvidersData" class="remove-account-container">
+			<img ng-src="/modules/users/img/buttons/{{providerName}}.png">
+			<a class="btn btn-danger btn-remove-account" data-ng-click="removeUserSocialAccount(providerName)">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-md-12 text-center">
+		<a href="/auth/facebook" data-ng-hide="isConnectedSocialAccount('facebook')" class="undecorated-link">
+			<img src="/modules/users/img/buttons/facebook.png">
+		</a>
+	</div>
+</section>
