@@ -29,7 +29,6 @@ describe('Question Model Unit Tests:', function() {
 
 		user.save(function() { 
 			question = new Question({
-				name: 'Question Name',
 				user: user
 			});
 
@@ -39,6 +38,17 @@ describe('Question Model Unit Tests:', function() {
 
 	describe('Method Save', function() {
 		it('should be able to save without problems', function(done) {
+			
+			question.query = 'Quem descobriu o brasil?';
+
+			question.awnsers = [{
+				description:'Pedro alvares cabral.',
+				correct: true
+			},{
+				description:'xuxa',
+				correct: false
+			}];
+
 			return question.save(function(err) {
 				should.not.exist(err);
 				done();
@@ -46,7 +56,8 @@ describe('Question Model Unit Tests:', function() {
 		});
 
 		it('should be able to show an error when try to save without name', function(done) { 
-			question.name = '';
+			question.query = '';
+			
 
 			return question.save(function(err) {
 				should.exist(err);
