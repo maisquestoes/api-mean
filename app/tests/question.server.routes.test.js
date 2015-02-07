@@ -38,9 +38,15 @@ describe('Question CRUD tests', function() {
 		// Save a user to the test db and create new Question
 		user.save(function() {
 			question = {
-				name: 'Question Name'
+				query: 'Quem descobriu o brasil?',
+				awnsers: [{
+						description:'Pedro alvares cabral.',
+						correct: true
+					},{
+						description:'xuxa',
+						correct: false
+					}]
 			};
-
 			done();
 		});
 	});
@@ -75,7 +81,7 @@ describe('Question CRUD tests', function() {
 
 								// Set assertions
 								(questions[0].user._id).should.equal(userId);
-								(questions[0].name).should.match('Question Name');
+								(questions[0].query).should.match('Quem descobriu o brasil?');
 
 								// Call the assertion callback
 								done();
@@ -94,9 +100,9 @@ describe('Question CRUD tests', function() {
 			});
 	});
 
-	it('should not be able to save Question instance if no name is provided', function(done) {
+	it('should not be able to save Question instance if no query is provided', function(done) {
 		// Invalidate name field
-		question.name = '';
+		question.query = '';
 
 		agent.post('/auth/signin')
 			.send(credentials)
@@ -114,7 +120,7 @@ describe('Question CRUD tests', function() {
 					.expect(400)
 					.end(function(questionSaveErr, questionSaveRes) {
 						// Set message assertion
-						(questionSaveRes.body.message).should.match('Please fill Question name');
+						(questionSaveRes.body.message).should.match('Insira o enunciado da questão.');
 						
 						// Handle Question save error
 						done(questionSaveErr);
@@ -141,8 +147,8 @@ describe('Question CRUD tests', function() {
 						// Handle Question save error
 						if (questionSaveErr) done(questionSaveErr);
 
-						// Update Question name
-						question.name = 'WHY YOU GOTTA BE SO MEAN?';
+						// Update Question query
+						question.query = 'WHY YOU GOTTA BE SO MEAN?';
 
 						// Update existing Question
 						agent.put('/questions/' + questionSaveRes.body._id)
@@ -154,7 +160,7 @@ describe('Question CRUD tests', function() {
 
 								// Set assertions
 								(questionUpdateRes.body._id).should.equal(questionSaveRes.body._id);
-								(questionUpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
+								(questionUpdateRes.body.query).should.match('WHY YOU GOTTA BE SO MEAN?');
 
 								// Call the assertion callback
 								done();
@@ -192,7 +198,7 @@ describe('Question CRUD tests', function() {
 			request(app).get('/questions/' + questionObj._id)
 				.end(function(req, res) {
 					// Set assertion
-					res.body.should.be.an.Object.with.property('name', question.name);
+					res.body.should.be.an.Object.with.property('query', question.query);
 
 					// Call the assertion callback
 					done();
