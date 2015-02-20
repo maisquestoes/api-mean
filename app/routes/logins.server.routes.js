@@ -5,15 +5,7 @@ module.exports = function(app) {
 	var logins = require('../../app/controllers/logins.server.controller');
 
 	// Logins Routes
-	app.route('/logins')
-		.get(logins.list)
-		.post(users.requiresLogin, logins.create);
+	app.route('/api/login/')
+		.post(logins.login);
 
-	app.route('/logins/:loginId')
-		.get(logins.read)
-		.put(users.requiresLogin, logins.hasAuthorization, logins.update)
-		.delete(users.requiresLogin, logins.hasAuthorization, logins.delete);
-
-	// Finish by binding the Login middleware
-	app.param('loginId', logins.loginByID);
 };
