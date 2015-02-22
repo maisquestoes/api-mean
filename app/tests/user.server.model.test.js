@@ -51,6 +51,15 @@ describe('User Model Unit Tests:', function() {
 			user.save(done);
 		});
 
+		it('should generate apikey on save', function(done) {
+
+			user.save();
+
+			if (user.apikey.length == 22) {
+				done();
+			}
+		});
+
 		it('should fail to save an existing user again', function(done) {
 			user.save();
 			return user2.save(function(err) {

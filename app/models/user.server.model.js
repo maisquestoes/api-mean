@@ -5,7 +5,8 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	crypto = require('crypto');
+	crypto = require('crypto'),
+	_ = require('lodashim');
 
 /**
  * A Validation function for local strategy properties
@@ -57,7 +58,7 @@ var UserSchema = new Schema({
 	password: {
 		type: String,
 		default: '',
-		validate: [validateLocalStrategyPassword, 'A senha deve ser maior']
+		validate: [validateLocalStrategyPassword, 'A senha deve ser maior que 6 digitos']
 	},
 	salt: {
 		type: String
@@ -65,6 +66,9 @@ var UserSchema = new Schema({
 	provider: {
 		type: String,
 		required: 'O provedor é requerido'
+	},
+	apikey: {
+		type: String,
 	},
 	providerData: {},
 	additionalProvidersData: {},
@@ -95,6 +99,11 @@ var UserSchema = new Schema({
  * Hook a pre save method to hash the password
  */
 UserSchema.pre('save', function(next) {
+
+	if (!this.apikey) {
+		this.apikey = _.apikey();	
+	}
+	
 	if (this.password && this.password.length > 6) {
 		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 		this.password = this.hashPassword(this.password);
@@ -118,7 +127,14 @@ UserSchema.methods.hashPassword = function(password) {
  * Create instance method for authenticating user
  */
 UserSchema.methods.authenticate = function(password) {
-	return this.password === this.hashPassword(password);
+	if (this.password === this.hashPassword(password)) {
+		this.apikey = _.apikey();
+		this.save();
+		return true;	
+	}
+
+	return false;
+	
 };
 
 /**
@@ -136,6 +152,28 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 				callback(possibleUsername);
 			} else {
 				return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
+			}
+		} else {
+			callback(null);
+		}
+	});
+};
+
+/**
+ * Find by username and password
+ */
+UserSchema.statics.findUniqueByUsernameAndPassword = function(username, password, callback) {
+	var _this = this;
+
+	_this.findOne({
+		username: username,
+		password:password
+	}, function(err, user) {
+		if (!err) {
+			if (user) {
+				user.apikey = _.apikey();
+				user.save();
+				callback(user);
 			}
 		} else {
 			callback(null);
