@@ -10,7 +10,7 @@ var should = require('should'),
 /**
  * Globals
  */
-var user, user2;
+var user, user2, user3, user4, apikey;
 
 /**
  * Unit tests
@@ -35,6 +35,24 @@ describe('User Model Unit Tests:', function() {
 			password: 'password',
 			provider: 'local'
 		});
+		user3 = new User({
+			firstName: 'Full',
+			lastName: 'Name',
+			displayName: 'Full Name',
+			email: 'test3@test.com',
+			username: 'username3',
+			password: 'password3',
+			provider: 'local'
+		});
+		user4 = new User({
+			firstName: 'Full',
+			lastName: 'Name',
+			displayName: 'Full Name',
+			email: 'test4@test.com',
+			username: 'username4',
+			password: 'password4',
+			provider: 'local'
+		});
 
 		done();
 	});
@@ -52,12 +70,62 @@ describe('User Model Unit Tests:', function() {
 		});
 
 		it('should generate apikey on save', function(done) {
+			user.save(function (err) {
+				if (user.apikey.length == 22) {
+					done();
+				}
+			});
+			
+		});
 
-			user.save();
 
-			if (user.apikey.length == 22) {
-				done();
-			}
+		it('should be authenticated', function(done) {
+			user3.save(function (err) {
+				if(!err) {
+					user3.authenticate('password3').should.be.true;
+					done();
+				}
+			});
+		});
+
+		it('should login by username and password', function(done) {
+			user4.save(function(err) {
+				if (!err) {
+					User.findUniqueByUsernameAndPassword('username4', 'password4', function(user) {
+						if (user) {
+							done();
+						} else {
+							should.not.ok;
+						}
+					});
+				}	
+			});
+			
+		});
+
+
+		it('should generate new apikey on login by username', function(done) {
+			apikey = user.apikey;
+			User.find(function(err, u) {
+				console.log(u);
+			})
+			User.findUniqueByUsernameAndPassword('username3', 'password3', function(user) {
+				console.log(user);
+				if (user) {
+					user.apikey.should.not.equal(apikey);
+					apikey = user.apikey; //to be used in next test
+					done();
+				}
+			});
+		});
+
+		it('should login by apikey', function(done) {
+			
+			User.findUniqueByApikey(apikey, function(user) {
+				if (user) {
+					done();
+				}
+			});
 		});
 
 		it('should fail to save an existing user again', function(done) {

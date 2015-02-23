@@ -69,6 +69,7 @@ var UserSchema = new Schema({
 	},
 	apikey: {
 		type: String,
+		unique: 'A apikey deve ser única',
 	},
 	providerData: {},
 	additionalProvidersData: {},
@@ -101,7 +102,7 @@ var UserSchema = new Schema({
 UserSchema.pre('save', function(next) {
 
 	if (!this.apikey) {
-		this.apikey = _.apikey();	
+		this.apikey = _.apikey();
 	}
 	
 	if (this.password && this.password.length > 6) {
@@ -127,22 +128,20 @@ UserSchema.methods.hashPassword = function(password) {
  * Create instance method for authenticating user
  */
 UserSchema.methods.authenticate = function(password) {
-	if (this.password === this.hashPassword(password)) {
+	if (this.password == this.hashPassword(password)) {
 		this.apikey = _.apikey();
 		this.save();
-		return true;	
+		return true;
 	}
-
 	return false;
-	
 };
 
 /**
  * Find possible not used username
  */
 UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
-	var _this = this;
-	var possibleUsername = username + (suffix || '');
+	var _this = this,
+		possibleUsername = username + (suffix || '');
 
 	_this.findOne({
 		username: possibleUsername
@@ -165,19 +164,30 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 UserSchema.statics.findUniqueByUsernameAndPassword = function(username, password, callback) {
 	var _this = this;
 
-	_this.findOne({
-		username: username,
-		password:password
-	}, function(err, user) {
+	_this.find().where('username').equals(username).findOne(function(err, user) {
 		if (!err) {
-			if (user) {
-				user.apikey = _.apikey();
-				user.save();
+			if (user && user.authenticate(password)) {
+
+		console.log(user);
 				callback(user);
 			}
-		} else {
-			callback(null);
 		}
+		callback(null);
+	});
+};
+
+/**
+ * Find by apikey
+ */
+UserSchema.statics.findUniqueByApikey = function(apikey, callback) {
+	
+	this.findOne({
+		apikey: apikey
+	}, function(err, user) {
+		if (!err) {
+			callback(user);
+		}
+		callback(null);
 	});
 };
 
