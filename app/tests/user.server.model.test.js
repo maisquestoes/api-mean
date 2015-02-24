@@ -71,7 +71,7 @@ describe('User Model Unit Tests:', function() {
 
 		it('should generate apikey on save', function(done) {
 			user.save(function (err) {
-				if (user.apikey.length == 22) {
+				if (user.apikey.length === 22) {
 					done();
 				}
 			});
@@ -82,7 +82,7 @@ describe('User Model Unit Tests:', function() {
 		it('should be authenticated', function(done) {
 			user3.save(function (err) {
 				if(!err) {
-					user3.authenticate('password3').should.be.true;
+					user3.authenticate('password3').should.be.exactly(true);
 					done();
 				}
 			});
@@ -105,22 +105,31 @@ describe('User Model Unit Tests:', function() {
 
 
 		it('should generate new apikey on login by username', function(done) {
-			apikey = user.apikey;
-			User.find(function(err, u) {
-				console.log(u);
-			})
-			User.findUniqueByUsernameAndPassword('username3', 'password3', function(user) {
-				console.log(user);
-				if (user) {
-					user.apikey.should.not.equal(apikey);
-					apikey = user.apikey; //to be used in next test
-					done();
-				}
+
+			var user = new User({
+				firstName: 'Full',
+				lastName: 'Name',
+				displayName: 'Full Name',
+				email: 'test@test.com',
+				username: 'username5',
+				password: 'password5',
+				provider: 'local'
 			});
+			user.save(function() {
+				apikey = user.apikey;
+
+				User.findUniqueByUsernameAndPassword('username5', 'password5', function(user) {
+					if (user) {
+						user.apikey.should.not.equal(apikey);
+						apikey = user.apikey; //to be used in next test
+						done();
+					}
+				});
+			});
+			
 		});
 
 		it('should login by apikey', function(done) {
-			
 			User.findUniqueByApikey(apikey, function(user) {
 				if (user) {
 					done();
