@@ -167,8 +167,6 @@ UserSchema.statics.findUniqueByUsernameAndPassword = function(username, password
 	_this.find().where('username').equals(username).findOne(function(err, user) {
 		if (!err) {
 			if (user && user.authenticate(password)) {
-
-		console.log(user);
 				callback(user);
 			}
 		}
