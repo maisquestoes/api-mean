@@ -14,20 +14,14 @@ var mongoose = require('mongoose'),
  * Show the current Login
  */
 exports.login = function(req, res) {
-	var retorno = JsonReturn();
+	//var retorno = new JsonReturn();
+	User.findUniqueByUsernameAndPassword('henri', 'cavalcante', function (user) {
 
-	User.find({username: 'henri'}, function (err, user) {
-		
-		if (err) {
-			res.jsonp();
-			
+		if (user) {
+			retorno.o = 'teste';
 		}
-		else {
-			retorno.o = user;
-			res.jsonp(retorno);
-			
+		res.json(user);
 
-		}
 	});
-	
+
 };

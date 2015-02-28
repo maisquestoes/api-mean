@@ -23,7 +23,7 @@ var	JsonReturn = function(settings) {
 		o: {},
 		m: '',
 		s: 0 
-	}
+	};
 
 	_.extend(jsonReturn, settings);
 

@@ -47,7 +47,7 @@ describe('JsonReturn tests:', function() {
 		});
 
 		it('should be instantiated without calling new', function(done) {
-			jsonReturn = JsonReturn({m:'test', o: {obj:1}, s: 1});
+			jsonReturn = new JsonReturn({m:'test', o: {obj:1}, s: 1});
 			jsonReturn.should.have.property('m', 'test');
 			jsonReturn.should.have.property('o', {obj:1});
 			jsonReturn.should.have.property('s', 1);
@@ -55,10 +55,10 @@ describe('JsonReturn tests:', function() {
 		});
 
 		it('should have default message to error and success status', function(done) {
-			jsonReturn = JsonReturn(1);
+			jsonReturn = new JsonReturn(1);
 			jsonReturn.should.have.property('m', 'Ação realizada com sucesso.');
 
-			jsonReturn = JsonReturn(-1);
+			jsonReturn = new JsonReturn(-1);
 			jsonReturn.should.have.property('m', 'Ocorreu um erro: -1');
 
 			done();

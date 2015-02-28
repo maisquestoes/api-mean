@@ -128,7 +128,7 @@ UserSchema.methods.hashPassword = function(password) {
  * Create instance method for authenticating user
  */
 UserSchema.methods.authenticate = function(password) {
-	if (this.password == this.hashPassword(password)) {
+	if (this.password === this.hashPassword(password)) {
 		this.apikey = _.apikey();
 		this.save();
 		return true;
