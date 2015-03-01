@@ -1,3 +1,4 @@
+/*jshint expr: true*/
 'use strict';
 
 /**
@@ -91,7 +92,7 @@ describe('User Model Unit Tests:', function() {
 		it('should login by username and password', function(done) {
 			user4.save(function(err) {
 				if (!err) {
-					User.findUniqueByUsernameAndPassword('username4', 'password4', function(user) {
+					User.findUniqueByUsernameAndPassword('username4', 'password4', function(err, user) {
 						if (user) {
 							done();
 						} else {
@@ -118,7 +119,7 @@ describe('User Model Unit Tests:', function() {
 			user.save(function() {
 				apikey = user.apikey;
 
-				User.findUniqueByUsernameAndPassword('username5', 'password5', function(user) {
+				User.findUniqueByUsernameAndPassword('username5', 'password5', function(err, user) {
 					if (user) {
 						user.apikey.should.not.equal(apikey);
 						apikey = user.apikey; //to be used in next test
@@ -130,7 +131,7 @@ describe('User Model Unit Tests:', function() {
 		});
 
 		it('should login by apikey', function(done) {
-			User.findUniqueByApikey(apikey, function(user) {
+			User.findUniqueByApikey(apikey, function(err, user) {
 				if (user) {
 					done();
 				}

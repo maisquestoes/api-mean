@@ -167,12 +167,13 @@ UserSchema.statics.findUniqueByUsernameAndPassword = function(username, password
 	_this.find().where('username').equals(username).findOne(function(err, user) {
 		if (!err) {
 			if (user && user.authenticate(password)) {
-				user.password = undefined;
-				user.salt = undefined;
-				callback(user);
+				//user.password = undefined;
+				//user.salt = undefined;
+				callback(err, user);
 			}
+		} else {
+			callback(err);
 		}
-		callback(null);
 	});
 };
 
@@ -185,11 +186,12 @@ UserSchema.statics.findUniqueByApikey = function(apikey, callback) {
 		apikey: apikey
 	}, function(err, user) {
 		if (!err) {
-			user.password = undefined;
-			user.salt = undefined;
-			callback(user);
+			//user.password = undefined;
+			//user.salt = undefined;
+			callback(err, user);
+		} else {
+			callback(err);
 		}
-		callback(null);
 	});
 };
 
