@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash'),
+var _ = require('lodashim'),
 	errorHandler = require('../errors.server.controller'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
@@ -56,26 +56,18 @@ exports.signin = function(req, res, next) {
 			res.status(400).send(info);
 		} else {
 			// Remove sensitive data before login
-			user.password = undefined;
-			user.salt = undefined;
+			//user.password = undefined;
+			//user.salt = undefined;
 
 			req.login(user, function(err) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
-					res.json(user);
+					res.json(_.clone(user));
 				}
 			});
 		}
 	})(req, res, next);
-};
-
-/**
- * Recuperar o acess_token pelo login e senha
- */
-exports.accessToken = function(req, res, next) {
-	var jsonReturn = new JsonReturn();
-	res.json(jsonReturn);
 };
 
 /**

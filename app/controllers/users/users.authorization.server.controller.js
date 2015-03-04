@@ -5,7 +5,8 @@
  */
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	passport = require('passport');
 
 /**
  * User middleware
@@ -32,6 +33,13 @@ exports.requiresLogin = function(req, res, next) {
 	}
 
 	next();
+};
+
+/**
+ * Require apikey routing middleware
+ */
+exports.requiresApikey = function(req, res, next) {
+	passport.authenticate('localapikey', { failureRedirect: '/api/unauthorized' })(req, res, next);
 };
 
 /**

@@ -14,6 +14,9 @@ var mongoose = require('mongoose'),
  */
 exports.login = function(req, res) {
 	var ret = new JsonReturn();
+
+
+/*
 	console.log(req.body.username);
 	User.findUniqueByUsernameAndPassword(req.body.username, req.body.password, function (err, user) {
 
@@ -31,7 +34,6 @@ exports.login = function(req, res) {
 		res.json(ret);
 
 	});
-/*
 
 User.find({username:'henricavalcante'}, function(err, user) {
 	retorno.o = user;
