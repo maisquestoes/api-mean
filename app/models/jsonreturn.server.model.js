@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('lodash');
+var _ = require('lodashim');
 
 /**
  * Default object to be returned in every api requisition

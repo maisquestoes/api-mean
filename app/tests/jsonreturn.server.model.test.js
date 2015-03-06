@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var should = require('should'),
-	JsonReturn = require('../models/jsonreturn.server.model.js');
+	JsonReturn = require('../models/jsonreturn.server.model');
 /**
  * Globals
  */

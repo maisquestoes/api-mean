@@ -8,7 +8,7 @@ var _ = require('lodashim'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	User = mongoose.model('User'),
-	JsonReturn = require('../../models/jsonreturn.server.model.js');
+	JsonReturn = require('../../models/jsonreturn.server.model');
 
 /**
  * Signup

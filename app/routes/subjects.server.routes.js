@@ -14,6 +14,9 @@ module.exports = function(app) {
 		.put(users.requiresLogin, subjects.hasAuthorization, subjects.update)
 		.delete(users.requiresLogin, subjects.hasAuthorization, subjects.delete);
 
+	app.route('/api/subject')
+		.get(users.requiresApikey, subjects.listAll);
+
 	// Finish by binding the Subject middleware
 	app.param('subjectId', subjects.subjectByID);
 };

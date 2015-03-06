@@ -9,10 +9,4 @@ module.exports = function(app) {
 	app.route('/api/login/')
 		.post(logins.login);
 
-	app.route('/api/test')
-		.post(users.requiresApikey,
-		function(req, res) {
-	    res.json({ message: 'Authenticated' });
-	  });
-
 };

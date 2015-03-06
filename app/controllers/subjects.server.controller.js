@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Subject = mongoose.model('Subject'),
-	_ = require('lodashim');
+	_ = require('lodashim'),
+	JsonReturn = require('../models/jsonreturn.server.model');
 
 /**
  * Create a Subject
@@ -83,6 +84,18 @@ exports.list = function(req, res) {
 		}
 	});
 };
+
+exports.listAll = function(req,res) {
+	Subject.find().sort('-created').exec(function(err, subjects) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(subjects);
+		}
+	});
+}
 
 /**
  * Subject middleware
