@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Emaxiningboard = mongoose.model('Emaxiningboard'),
-	_ = require('lodash');
+	_ = require('lodashim');
 
 /**
  * Create a Emaxiningboard

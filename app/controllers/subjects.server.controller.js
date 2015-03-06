@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Subject = mongoose.model('Subject'),
-	_ = require('lodash');
+	_ = require('lodashim');
 
 /**
  * Create a Subject

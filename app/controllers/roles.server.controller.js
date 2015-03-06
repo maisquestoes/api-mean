@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Role = mongoose.model('Role'),
-	_ = require('lodash');
+	_ = require('lodashim');
 
 /**
  * Create a Role

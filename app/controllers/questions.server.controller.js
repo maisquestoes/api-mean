@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Question = mongoose.model('Question'),
-	_ = require('lodash');
+	_ = require('lodashim');
 
 /**
  * Create a Question

@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Like = mongoose.model('Like'),
-	_ = require('lodash');
+	_ = require('lodashim');
 
 /**
  * Create a Like

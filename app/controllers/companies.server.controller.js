@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Company = mongoose.model('Company'),
-	_ = require('lodash');
+	_ = require('lodashim');
 
 /**
  * Create a Company
