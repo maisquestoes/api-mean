@@ -31,7 +31,8 @@ module.exports = function(app) {
 	}));
 	app.route('/auth/facebook/callback').get(users.oauthCallback('facebook'));
 
-	//app.route('/auth/accessToken').post(users.accessToken);
+	app.route('/api/unauthorized').get(users.unauthorized);
+
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
 

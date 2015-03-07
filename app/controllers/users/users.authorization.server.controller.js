@@ -6,7 +6,8 @@
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	passport = require('passport');
+	passport = require('passport'),
+	JsonReturn = require('../../models/jsonreturn.server.model');
 
 /**
  * User middleware
@@ -59,4 +60,15 @@ exports.hasAuthorization = function(roles) {
 			}
 		});
 	};
+};
+
+/**
+ * When doesn't have autorization
+ */
+exports.unauthorized = function(req, res) {
+	var jsonReturn = new JsonReturn();
+	jsonReturn.s = -1;
+	jsonReturn.m = 'Não possui autorização para acessar este método';
+
+	res.json(jsonReturn);
 };

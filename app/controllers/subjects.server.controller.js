@@ -95,7 +95,7 @@ exports.listAll = function(req,res) {
 			res.jsonp(subjects);
 		}
 	});
-}
+};
 
 /**
  * Subject middleware
